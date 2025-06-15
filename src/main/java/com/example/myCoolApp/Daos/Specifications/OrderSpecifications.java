@@ -19,9 +19,18 @@ public abstract class OrderSpecifications {
 
             List<Predicate> predicates = new ArrayList<>();
 
-            predicates.add(cb.like((root.get(Order_.customerName)),"%"+customerName+"%"));
-            predicates.add(cb.greaterThanOrEqualTo(root.get(Order_.orderDate), orderDate));
-            predicates.add(cb.lessThanOrEqualTo(root.get(Order_.totalAmount), totalAmount));
+            if (customerName != null && !customerName.isEmpty()) {
+                predicates.add(cb.like(cb.lower(root.get(Order_.customerName)), "%" + customerName.toLowerCase() + "%"));
+            }
+
+            if (orderDate != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get(Order_.orderDate), orderDate));
+            }
+
+            if (totalAmount != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get(Order_.totalAmount), totalAmount));
+            }
+
 
             return cb.and(predicates.toArray(new Predicate[0]));
 

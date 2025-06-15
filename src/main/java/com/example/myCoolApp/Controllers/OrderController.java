@@ -9,11 +9,14 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/orders")
@@ -24,7 +27,6 @@ public class OrderController {
 
     @Autowired
     private  OrderMapper mapper;
-
 
 
     @PostMapping("/create")
@@ -63,5 +65,13 @@ public class OrderController {
         return orderService.getAllOrdersPageable(pageable);
     }
 
-
+    @GetMapping("/filter")
+    public Page<OrderDto> getFilteredOrders(
+            @RequestParam Optional<String> customerName,
+            @RequestParam Optional<Double> totalAmount,
+            @RequestParam(name = "orderDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date orderDate,
+            Pageable pageable) {
+        Optional<Date> optionalOrderDate = Optional.ofNullable(orderDate);
+        return orderService.getFilteredOrders(customerName, totalAmount, optionalOrderDate, pageable);
+    }
 }
