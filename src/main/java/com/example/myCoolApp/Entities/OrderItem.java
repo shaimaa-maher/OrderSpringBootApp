@@ -37,7 +37,7 @@ public class OrderItem implements Serializable {
     private Double price;
 
     @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, cascade =CascadeType.ALL)
+    @ManyToOne(cascade =CascadeType.ALL)
     private Order orderId;
 
     public Integer getId() {
