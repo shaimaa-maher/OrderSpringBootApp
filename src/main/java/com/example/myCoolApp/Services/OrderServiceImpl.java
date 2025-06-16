@@ -67,6 +67,7 @@ public class OrderServiceImpl implements OrderService{
 
 
     @Override
+    @Transactional
     public void deleteOrder(Integer id) {
         if (!orderRepository.existsById(id)) {
             throw new EntityNotFoundException("Order not found with id " + id);
